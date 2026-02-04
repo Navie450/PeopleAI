@@ -23,6 +23,7 @@ export interface User {
   last_name?: string
   phone?: string
   is_active: boolean
+  roles?: string[]
   user_roles?: UserRole[]
   created_at: string
   updated_at?: string

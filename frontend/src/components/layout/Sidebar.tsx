@@ -14,27 +14,41 @@ import {
   People as PeopleIcon,
   Settings as SettingsIcon,
   Security as SecurityIcon,
+  Badge as BadgeIcon,
+  Business as BusinessIcon,
 } from '@mui/icons-material'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import logo from '@/assets/peopleai-logo.png'
+import { ROLE_PERMISSIONS } from '@/constants/roles'
 
 interface SidebarProps {
   open: boolean
   width: number
 }
 
+interface MenuItem {
+  label: string
+  icon: React.ReactNode
+  path: string
+  allowedRoles: readonly string[]
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({ open, width }) => {
   const navigate = useNavigate()
   const location = useLocation()
-  const { user } = useAuth()
+  const { user, hasAnyRole } = useAuth()
 
-  const menuItems = [
-    { label: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { label: 'Users', icon: <PeopleIcon />, path: '/users' },
-    { label: 'Security', icon: <SecurityIcon />, path: '/security' },
-    { label: 'Settings', icon: <SettingsIcon />, path: '/settings' },
+  const menuItems: MenuItem[] = [
+    { label: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard', allowedRoles: ROLE_PERMISSIONS.DASHBOARD },
+    { label: 'Employees', icon: <BadgeIcon />, path: '/employees', allowedRoles: ROLE_PERMISSIONS.EMPLOYEES },
+    { label: 'Departments', icon: <BusinessIcon />, path: '/departments', allowedRoles: ROLE_PERMISSIONS.DEPARTMENTS },
+    { label: 'Users', icon: <PeopleIcon />, path: '/users', allowedRoles: ROLE_PERMISSIONS.USERS },
+    { label: 'Security', icon: <SecurityIcon />, path: '/security', allowedRoles: ROLE_PERMISSIONS.SECURITY },
+    { label: 'Settings', icon: <SettingsIcon />, path: '/settings', allowedRoles: ROLE_PERMISSIONS.SETTINGS },
   ]
+
+  const visibleMenuItems = menuItems.filter(item => hasAnyRole([...item.allowedRoles]))
 
   const isActive = (path: string) => {
     if (path === '/dashboard') {
@@ -99,7 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, width }) => {
       {/* Navigation Menu */}
       <Box sx={{ flex: 1, py: 1 }}>
         <List sx={{ px: 2 }}>
-          {menuItems.map((item) => (
+          {visibleMenuItems.map((item) => (
             <ListItem key={item.path} disablePadding sx={{ mb: 1.5 }}>
               <ListItemButton
                 selected={isActive(item.path)}
