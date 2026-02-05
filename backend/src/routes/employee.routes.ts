@@ -20,6 +20,9 @@ import {
   updateLeaveBalance,
   addPerformanceGoal,
   updatePerformanceGoal,
+  updateMyContactInfo,
+  updateMyEmergencyContacts,
+  updateMyGoalProgress,
 } from '../controllers/employee.controller';
 import { authenticate } from '../middleware/auth.middleware';
 import { requireAdmin, requireAdminOrManager } from '../middleware/rbac.middleware';
@@ -35,6 +38,15 @@ router.use(authenticate);
 
 // Get current user's employee profile
 router.get('/me', getMyProfile);
+
+// Update own contact info
+router.put('/me/contact-info', updateMyContactInfo);
+
+// Update own emergency contacts
+router.put('/me/emergency-contacts', updateMyEmergencyContacts);
+
+// Update own goal progress
+router.put('/me/goals/:goalId/progress', updateMyGoalProgress);
 
 // ============================================
 // SEARCH & DISCOVERY ROUTES

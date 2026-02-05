@@ -24,11 +24,18 @@ import {
   Person,
 } from '@mui/icons-material'
 import { departmentsApi } from '@/api/departments.api'
+import { useAuth } from '@/hooks/useAuth'
+import { ROLES } from '@/constants/roles'
 import type { Department, DepartmentEmployeesResponse } from '@/types'
 
 export const DepartmentDetail = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { hasRole } = useAuth()
+
+  // Role-based access checks
+  const isAdmin = hasRole(ROLES.ADMIN)
+
   const [department, setDepartment] = useState<Department | null>(null)
   const [employees, setEmployees] = useState<DepartmentEmployeesResponse['employees']>([])
   const [loading, setLoading] = useState(true)
@@ -275,24 +282,26 @@ export const DepartmentDetail = () => {
                 )}
               </Stack>
 
-              <Box sx={{ mt: 3 }}>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  startIcon={<Edit />}
-                  onClick={() => navigate(`/departments/${id}/edit`)}
-                  sx={{
-                    bgcolor: '#0F172A',
-                    borderRadius: 2,
-                    py: 1.5,
-                    fontWeight: 600,
-                    textTransform: 'none',
-                    '&:hover': { bgcolor: '#1a2236' },
-                  }}
-                >
-                  Edit Department
-                </Button>
-              </Box>
+              {isAdmin && (
+                <Box sx={{ mt: 3 }}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    startIcon={<Edit />}
+                    onClick={() => navigate(`/departments/${id}/edit`)}
+                    sx={{
+                      bgcolor: '#0F172A',
+                      borderRadius: 2,
+                      py: 1.5,
+                      fontWeight: 600,
+                      textTransform: 'none',
+                      '&:hover': { bgcolor: '#1a2236' },
+                    }}
+                  >
+                    Edit Department
+                  </Button>
+                </Box>
+              )}
             </CardContent>
           </Card>
         </Grid>

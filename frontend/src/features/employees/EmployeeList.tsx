@@ -54,6 +54,8 @@ import {
 import { employeesApi } from '@/api/employees.api'
 import { departmentsApi } from '@/api/departments.api'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/hooks/useAuth'
+import { ROLES } from '@/constants/roles'
 import type { EmployeeListItem, EmploymentStatus, EmploymentType, DepartmentListItem } from '@/types'
 
 const statusColors: Record<EmploymentStatus, { bg: string; color: string }> = {
@@ -84,6 +86,12 @@ const skillOptions = [
 
 export const EmployeeList = () => {
   const navigate = useNavigate()
+  const { hasRole, hasAnyRole } = useAuth()
+
+  // Role-based access checks
+  const isAdmin = hasRole(ROLES.ADMIN)
+  const isAdminOrManager = hasAnyRole([ROLES.ADMIN, ROLES.MANAGER])
+
   const [employees, setEmployees] = useState<EmployeeListItem[]>([])
   const [departments, setDepartments] = useState<DepartmentListItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -395,23 +403,25 @@ export const EmployeeList = () => {
           </Typography>
         </Box>
         <Stack direction="row" spacing={2}>
-          <Button
-            variant="outlined"
-            startIcon={<Analytics />}
-            onClick={() => navigate('/employees/analytics')}
-            sx={{
-              borderColor: '#E2E8F0',
-              color: '#475569',
-              borderRadius: 2,
-              px: 2.5,
-              py: 1,
-              fontWeight: 600,
-              textTransform: 'none',
-              '&:hover': { borderColor: '#0F172A', bgcolor: 'rgba(15, 23, 42, 0.04)' },
-            }}
-          >
-            Analytics
-          </Button>
+          {isAdminOrManager && (
+            <Button
+              variant="outlined"
+              startIcon={<Analytics />}
+              onClick={() => navigate('/employees/analytics')}
+              sx={{
+                borderColor: '#E2E8F0',
+                color: '#475569',
+                borderRadius: 2,
+                px: 2.5,
+                py: 1,
+                fontWeight: 600,
+                textTransform: 'none',
+                '&:hover': { borderColor: '#0F172A', bgcolor: 'rgba(15, 23, 42, 0.04)' },
+              }}
+            >
+              Analytics
+            </Button>
+          )}
           <Button
             variant="outlined"
             startIcon={<AccountTree />}
@@ -429,28 +439,30 @@ export const EmployeeList = () => {
           >
             Org Chart
           </Button>
-          <Button
-            variant="contained"
-            startIcon={<PersonAdd />}
-            onClick={() => navigate('/employees/new')}
-            sx={{
-              bgcolor: '#0F172A',
-              borderRadius: 2,
-              px: 3,
-              py: 1,
-              fontWeight: 700,
-              textTransform: 'none',
-              boxShadow: '0 4px 12px rgba(15, 23, 42, 0.2)',
-              '&:hover': {
-                bgcolor: '#1a2236',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 20px rgba(15, 23, 42, 0.3)',
-              },
-              transition: 'all 0.2s',
-            }}
-          >
-            Add Employee
-          </Button>
+          {isAdmin && (
+            <Button
+              variant="contained"
+              startIcon={<PersonAdd />}
+              onClick={() => navigate('/employees/new')}
+              sx={{
+                bgcolor: '#0F172A',
+                borderRadius: 2,
+                px: 3,
+                py: 1,
+                fontWeight: 700,
+                textTransform: 'none',
+                boxShadow: '0 4px 12px rgba(15, 23, 42, 0.2)',
+                '&:hover': {
+                  bgcolor: '#1a2236',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 20px rgba(15, 23, 42, 0.3)',
+                },
+                transition: 'all 0.2s',
+              }}
+            >
+              Add Employee
+            </Button>
+          )}
         </Stack>
       </Box>
 
@@ -686,21 +698,23 @@ export const EmployeeList = () => {
               No employees found
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Get started by adding your first employee
+              {isAdmin ? 'Get started by adding your first employee' : 'No employees have been added yet'}
             </Typography>
-            <Button
-              variant="contained"
-              startIcon={<PersonAdd />}
-              onClick={() => navigate('/employees/new')}
-              sx={{
-                bgcolor: '#0F172A',
-                textTransform: 'none',
-                fontWeight: 600,
-                '&:hover': { bgcolor: '#1a2236' },
-              }}
-            >
-              Add Your First Employee
-            </Button>
+            {isAdmin && (
+              <Button
+                variant="contained"
+                startIcon={<PersonAdd />}
+                onClick={() => navigate('/employees/new')}
+                sx={{
+                  bgcolor: '#0F172A',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  '&:hover': { bgcolor: '#1a2236' },
+                }}
+              >
+                Add Your First Employee
+              </Button>
+            )}
           </CardContent>
         </Card>
       ) : (
@@ -880,30 +894,38 @@ export const EmployeeList = () => {
           },
         }}
       >
-        <MenuItem onClick={handleEdit} sx={{ py: 1.5 }}>
-          <ListItemIcon>
-            <Edit fontSize="small" sx={{ color: '#475569' }} />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Edit Profile</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handlePromote} sx={{ py: 1.5 }}>
-          <ListItemIcon>
-            <TrendingUp fontSize="small" sx={{ color: '#10B981' }} />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Promote</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleTransfer} sx={{ py: 1.5 }}>
-          <ListItemIcon>
-            <SwapHoriz fontSize="small" sx={{ color: '#3B82F6' }} />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Transfer</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleDelete} sx={{ py: 1.5, color: '#EF4444' }}>
-          <ListItemIcon>
-            <Delete fontSize="small" sx={{ color: '#EF4444' }} />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Remove</ListItemText>
-        </MenuItem>
+        {isAdminOrManager && (
+          <MenuItem onClick={handleEdit} sx={{ py: 1.5 }}>
+            <ListItemIcon>
+              <Edit fontSize="small" sx={{ color: '#475569' }} />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Edit Profile</ListItemText>
+          </MenuItem>
+        )}
+        {isAdmin && (
+          <MenuItem onClick={handlePromote} sx={{ py: 1.5 }}>
+            <ListItemIcon>
+              <TrendingUp fontSize="small" sx={{ color: '#10B981' }} />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Promote</ListItemText>
+          </MenuItem>
+        )}
+        {isAdmin && (
+          <MenuItem onClick={handleTransfer} sx={{ py: 1.5 }}>
+            <ListItemIcon>
+              <SwapHoriz fontSize="small" sx={{ color: '#3B82F6' }} />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Transfer</ListItemText>
+          </MenuItem>
+        )}
+        {isAdmin && (
+          <MenuItem onClick={handleDelete} sx={{ py: 1.5, color: '#EF4444' }}>
+            <ListItemIcon>
+              <Delete fontSize="small" sx={{ color: '#EF4444' }} />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Remove</ListItemText>
+          </MenuItem>
+        )}
       </Menu>
     </Box>
   )

@@ -4,6 +4,8 @@ import authRoutes from './auth.routes';
 import userRoutes from './user.routes';
 import employeeRoutes from './employee.routes';
 import departmentRoutes from './department.routes';
+import leaveRequestRoutes from './leave-request.routes';
+import announcementRoutes from './announcement.routes';
 
 const router = Router();
 
@@ -22,7 +24,10 @@ router.use('/employees', employeeRoutes);
 // Department routes (authentication handled within route)
 router.use('/departments', departmentRoutes);
 
-// Role routes will be added here if needed
-// router.use('/roles', roleRoutes);
+// Leave request routes (authentication handled within route)
+router.use('/leave-requests', leaveRequestRoutes);
+
+// Announcement routes (authentication handled within route)
+router.use('/announcements', announcementRoutes);
 
 export default router;

@@ -42,6 +42,8 @@ import {
 } from '@mui/icons-material'
 import { departmentsApi } from '@/api/departments.api'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/hooks/useAuth'
+import { ROLES } from '@/constants/roles'
 import type { DepartmentListItem, DepartmentHierarchy } from '@/types'
 
 // Hierarchy Tree Node Component
@@ -136,6 +138,11 @@ const HierarchyNode = ({ node, level, expanded, onToggle, onNavigate }: Hierarch
 
 export const DepartmentList = () => {
   const navigate = useNavigate()
+  const { hasRole } = useAuth()
+
+  // Role-based access checks
+  const isAdmin = hasRole(ROLES.ADMIN)
+
   const [departments, setDepartments] = useState<DepartmentListItem[]>([])
   const [hierarchy, setHierarchy] = useState<DepartmentHierarchy[]>([])
   const [loading, setLoading] = useState(true)
@@ -301,24 +308,26 @@ export const DepartmentList = () => {
           >
             Org Chart
           </Button>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={() => navigate('/departments/new')}
-            sx={{
-              bgcolor: '#0F172A',
-              borderRadius: 2,
-              px: 3,
-              py: 1,
-              fontWeight: 700,
-              textTransform: 'none',
-              boxShadow: '0 4px 12px rgba(15, 23, 42, 0.2)',
-              '&:hover': { bgcolor: '#1a2236', transform: 'translateY(-2px)' },
-              transition: 'all 0.2s',
-            }}
-          >
-            Add Department
-          </Button>
+          {isAdmin && (
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => navigate('/departments/new')}
+              sx={{
+                bgcolor: '#0F172A',
+                borderRadius: 2,
+                px: 3,
+                py: 1,
+                fontWeight: 700,
+                textTransform: 'none',
+                boxShadow: '0 4px 12px rgba(15, 23, 42, 0.2)',
+                '&:hover': { bgcolor: '#1a2236', transform: 'translateY(-2px)' },
+                transition: 'all 0.2s',
+              }}
+            >
+              Add Department
+            </Button>
+          )}
         </Stack>
       </Box>
 
@@ -397,21 +406,23 @@ export const DepartmentList = () => {
               No departments found
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Create your first department to organize your team
+              {isAdmin ? 'Create your first department to organize your team' : 'No departments have been created yet'}
             </Typography>
-            <Button
-              variant="contained"
-              startIcon={<Add />}
-              onClick={() => navigate('/departments/new')}
-              sx={{
-                bgcolor: '#0F172A',
-                textTransform: 'none',
-                fontWeight: 600,
-                '&:hover': { bgcolor: '#1a2236' },
-              }}
-            >
-              Create Department
-            </Button>
+            {isAdmin && (
+              <Button
+                variant="contained"
+                startIcon={<Add />}
+                onClick={() => navigate('/departments/new')}
+                sx={{
+                  bgcolor: '#0F172A',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  '&:hover': { bgcolor: '#1a2236' },
+                }}
+              >
+                Create Department
+              </Button>
+            )}
           </CardContent>
         </Card>
       ) : viewMode === 'hierarchy' ? (
@@ -495,13 +506,15 @@ export const DepartmentList = () => {
                           }}
                         />
                       </Box>
-                      <IconButton
-                        size="small"
-                        onClick={(e) => handleMenuOpen(e, dept)}
-                        sx={{ color: '#94A3B8' }}
-                      >
-                        <MoreVert fontSize="small" />
-                      </IconButton>
+                      {isAdmin && (
+                        <IconButton
+                          size="small"
+                          onClick={(e) => handleMenuOpen(e, dept)}
+                          sx={{ color: '#94A3B8' }}
+                        >
+                          <MoreVert fontSize="small" />
+                        </IconButton>
+                      )}
                     </Box>
 
                     {dept.description && (
@@ -566,28 +579,30 @@ export const DepartmentList = () => {
         </Grid>
       )}
 
-      {/* Context Menu */}
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-        PaperProps={{
-          sx: { borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.15)', minWidth: 160 },
-        }}
-      >
-        <MenuItem onClick={handleEdit} sx={{ py: 1.5 }}>
-          <ListItemIcon>
-            <Edit fontSize="small" sx={{ color: '#475569' }} />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Edit</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleDelete} sx={{ py: 1.5, color: '#EF4444' }}>
-          <ListItemIcon>
-            <Delete fontSize="small" sx={{ color: '#EF4444' }} />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Delete</ListItemText>
-        </MenuItem>
-      </Menu>
+      {/* Context Menu - Admin Only */}
+      {isAdmin && (
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          PaperProps={{
+            sx: { borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.15)', minWidth: 160 },
+          }}
+        >
+          <MenuItem onClick={handleEdit} sx={{ py: 1.5 }}>
+            <ListItemIcon>
+              <Edit fontSize="small" sx={{ color: '#475569' }} />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Edit</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={handleDelete} sx={{ py: 1.5, color: '#EF4444' }}>
+            <ListItemIcon>
+              <Delete fontSize="small" sx={{ color: '#EF4444' }} />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ fontWeight: 500 }}>Delete</ListItemText>
+          </MenuItem>
+        </Menu>
+      )}
     </Box>
   )
 }

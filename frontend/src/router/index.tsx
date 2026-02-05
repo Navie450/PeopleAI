@@ -13,6 +13,20 @@ import { Settings } from '@/features/settings/Settings'
 import { Profile } from '@/features/profile/Profile'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { ROLE_PERMISSIONS } from '@/constants/roles'
+// Employee Portal imports
+import {
+  EmployeePortalDashboard,
+  MyProfile,
+  MyLeave,
+  MyGoals,
+  TeamDirectory,
+  Announcements,
+} from '@/features/employee-portal'
+// Announcement Management imports
+import {
+  AnnouncementManagement,
+  AnnouncementForm,
+} from '@/features/announcements'
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +59,54 @@ export const router = createBrowserRouter([
           {
             path: '/profile',
             element: <Profile />
+          },
+          // Employee Portal Routes (Self-Service)
+          {
+            element: <RoleProtectedRoute allowedRoles={[...ROLE_PERMISSIONS.EMPLOYEE_PORTAL]} />,
+            children: [
+              {
+                path: '/my-dashboard',
+                element: <EmployeePortalDashboard />
+              },
+              {
+                path: '/my-profile',
+                element: <MyProfile />
+              },
+              {
+                path: '/my-leave',
+                element: <MyLeave />
+              },
+              {
+                path: '/my-goals',
+                element: <MyGoals />
+              },
+              {
+                path: '/team-directory',
+                element: <TeamDirectory />
+              },
+              {
+                path: '/announcements',
+                element: <Announcements />
+              },
+            ]
+          },
+          // Announcement Management (Admin only)
+          {
+            element: <RoleProtectedRoute allowedRoles={[...ROLE_PERMISSIONS.ANNOUNCEMENTS_MANAGE]} />,
+            children: [
+              {
+                path: '/announcements/manage',
+                element: <AnnouncementManagement />
+              },
+              {
+                path: '/announcements/new',
+                element: <AnnouncementForm mode="create" />
+              },
+              {
+                path: '/announcements/:id/edit',
+                element: <AnnouncementForm mode="edit" />
+              },
+            ]
           },
           // Admin + Manager routes
           {

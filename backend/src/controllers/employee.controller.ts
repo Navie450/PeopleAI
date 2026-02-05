@@ -96,7 +96,21 @@ export const getMyProfile = async (
       throw new Error('User not authenticated');
     }
 
-    const employee = await employeeService.getEmployeeByUserId(userId);
+    let employee = null;
+    try {
+      employee = await employeeService.getEmployeeByUserId(userId);
+    } catch (err: any) {
+      // If no employee record exists, return null instead of error
+      if (err.name === 'NotFoundError') {
+        const response: ApiResponse = {
+          success: true,
+          data: null,
+          message: 'No employee profile linked to this user account',
+        };
+        return res.status(200).json(response);
+      }
+      throw err;
+    }
 
     const response: ApiResponse = {
       success: true,
@@ -542,6 +556,147 @@ export const updatePerformanceGoal = async (
       success: true,
       data: employee,
       message: 'Performance goal updated successfully',
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ============================================
+// SELF-SERVICE ROUTES
+// ============================================
+
+// Update own contact info
+export const updateMyContactInfo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+
+    const employee = await employeeService.getEmployeeByUserId(userId);
+
+    // Only allow updating contact-related fields
+    const allowedFields = {
+      personal_email: req.body.personal_email,
+      personal_phone: req.body.personal_phone,
+      address_line1: req.body.address_line1,
+      address_line2: req.body.address_line2,
+      city: req.body.city,
+      state: req.body.state,
+      postal_code: req.body.postal_code,
+      country: req.body.country,
+    };
+
+    // Remove undefined values
+    const updates = Object.fromEntries(
+      Object.entries(allowedFields).filter(([_, v]) => v !== undefined)
+    );
+
+    const updatedEmployee = await employeeService.updateEmployee(
+      employee.id,
+      updates,
+      userId
+    );
+
+    logger.info('Employee updated own contact info:', {
+      employeeId: employee.id,
+      userId,
+    });
+
+    const response: ApiResponse = {
+      success: true,
+      data: updatedEmployee,
+      message: 'Contact information updated successfully',
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Update own emergency contacts
+export const updateMyEmergencyContacts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+
+    const employee = await employeeService.getEmployeeByUserId(userId);
+
+    const updatedEmployee = await employeeService.updateEmployee(
+      employee.id,
+      { emergency_contacts: req.body.emergency_contacts },
+      userId
+    );
+
+    logger.info('Employee updated own emergency contacts:', {
+      employeeId: employee.id,
+      userId,
+    });
+
+    const response: ApiResponse = {
+      success: true,
+      data: updatedEmployee,
+      message: 'Emergency contacts updated successfully',
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Update own goal progress
+export const updateMyGoalProgress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { goalId } = req.params;
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+
+    const employee = await employeeService.getEmployeeByUserId(userId);
+
+    // Only allow updating progress_percentage and status for self-service
+    const updates = {
+      progress_percentage: req.body.progress_percentage,
+      status: req.body.status,
+    };
+
+    const updatedEmployee = await employeeService.updatePerformanceGoal(
+      employee.id,
+      goalId,
+      updates,
+      userId
+    );
+
+    logger.info('Employee updated own goal progress:', {
+      employeeId: employee.id,
+      goalId,
+      userId,
+    });
+
+    const response: ApiResponse = {
+      success: true,
+      data: updatedEmployee,
+      message: 'Goal progress updated successfully',
     };
 
     res.status(200).json(response);

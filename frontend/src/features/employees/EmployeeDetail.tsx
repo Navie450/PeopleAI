@@ -69,6 +69,8 @@ import {
 } from '@mui/icons-material'
 import { employeesApi } from '@/api/employees.api'
 import { departmentsApi } from '@/api/departments.api'
+import { useAuth } from '@/hooks/useAuth'
+import { ROLES } from '@/constants/roles'
 import type { Employee, EmployeeListItem, EmploymentStatus, DepartmentListItem, Skill, PerformanceGoal } from '@/types'
 
 const statusColors: Record<EmploymentStatus, { bg: string; color: string; label: string }> = {
@@ -129,6 +131,12 @@ const InfoCard = ({ title, children }: { title: string; children: React.ReactNod
 export const EmployeeDetail = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { hasRole, hasAnyRole } = useAuth()
+
+  // Role-based access checks
+  const isAdmin = hasRole(ROLES.ADMIN)
+  const isAdminOrManager = hasAnyRole([ROLES.ADMIN, ROLES.MANAGER])
+
   const [employee, setEmployee] = useState<Employee | null>(null)
   const [directReports, setDirectReports] = useState<EmployeeListItem[]>([])
   const [departments, setDepartments] = useState<DepartmentListItem[]>([])
@@ -524,34 +532,38 @@ export const EmployeeDetail = () => {
                 </Box>
               </Stack>
 
-              <Box sx={{ mt: 3, display: 'flex', gap: 1 }}>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  startIcon={<Edit />}
-                  onClick={() => navigate(`/employees/${id}/edit`)}
-                  sx={{
-                    bgcolor: '#0F172A',
-                    borderRadius: 2,
-                    py: 1.5,
-                    fontWeight: 600,
-                    textTransform: 'none',
-                    '&:hover': { bgcolor: '#1a2236' },
-                  }}
-                >
-                  Edit Profile
-                </Button>
-                <IconButton
-                  onClick={(e) => setAnchorEl(e.currentTarget)}
-                  sx={{
-                    border: '1px solid rgba(0,0,0,0.12)',
-                    borderRadius: 2,
-                    '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
-                  }}
-                >
-                  <MoreVert />
-                </IconButton>
-              </Box>
+              {isAdminOrManager && (
+                <Box sx={{ mt: 3, display: 'flex', gap: 1 }}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    startIcon={<Edit />}
+                    onClick={() => navigate(`/employees/${id}/edit`)}
+                    sx={{
+                      bgcolor: '#0F172A',
+                      borderRadius: 2,
+                      py: 1.5,
+                      fontWeight: 600,
+                      textTransform: 'none',
+                      '&:hover': { bgcolor: '#1a2236' },
+                    }}
+                  >
+                    Edit Profile
+                  </Button>
+                  {isAdmin && (
+                    <IconButton
+                      onClick={(e) => setAnchorEl(e.currentTarget)}
+                      sx={{
+                        border: '1px solid rgba(0,0,0,0.12)',
+                        borderRadius: 2,
+                        '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
+                      }}
+                    >
+                      <MoreVert />
+                    </IconButton>
+                  )}
+                </Box>
+              )}
 
               {/* Action Menu */}
               <Menu
@@ -789,16 +801,18 @@ export const EmployeeDetail = () => {
                   {/* Skills */}
                   <Grid item xs={12}>
                     <InfoCard title="Skills & Competencies">
-                      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-                        <Button
-                          size="small"
-                          startIcon={<Add />}
-                          onClick={() => setSkillDialog(true)}
-                          sx={{ fontWeight: 600, textTransform: 'none' }}
-                        >
-                          Add Skill
-                        </Button>
-                      </Box>
+                      {isAdminOrManager && (
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                          <Button
+                            size="small"
+                            startIcon={<Add />}
+                            onClick={() => setSkillDialog(true)}
+                            sx={{ fontWeight: 600, textTransform: 'none' }}
+                          >
+                            Add Skill
+                          </Button>
+                        </Box>
+                      )}
                       {employee.skills && employee.skills.length > 0 ? (
                         <Grid container spacing={2}>
                           {employee.skills.map((skill, i) => (
@@ -917,16 +931,18 @@ export const EmployeeDetail = () => {
                   {/* Performance Goals */}
                   <Grid item xs={12} md={8}>
                     <InfoCard title="Performance Goals">
-                      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-                        <Button
-                          size="small"
-                          startIcon={<Add />}
-                          onClick={() => setGoalDialog(true)}
-                          sx={{ fontWeight: 600, textTransform: 'none' }}
-                        >
-                          Add Goal
-                        </Button>
-                      </Box>
+                      {isAdminOrManager && (
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                          <Button
+                            size="small"
+                            startIcon={<Add />}
+                            onClick={() => setGoalDialog(true)}
+                            sx={{ fontWeight: 600, textTransform: 'none' }}
+                          >
+                            Add Goal
+                          </Button>
+                        </Box>
+                      )}
                       {employee.performance_goals && employee.performance_goals.length > 0 ? (
                         <Stack spacing={2}>
                           {employee.performance_goals.map((goal) => (
@@ -976,16 +992,18 @@ export const EmployeeDetail = () => {
                   {/* Leave Balances */}
                   <Grid item xs={12} md={6}>
                     <InfoCard title="Leave Balances">
-                      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-                        <Button
-                          size="small"
-                          startIcon={<Edit />}
-                          onClick={() => setLeaveDialog(true)}
-                          sx={{ fontWeight: 600, textTransform: 'none' }}
-                        >
-                          Update Balance
-                        </Button>
-                      </Box>
+                      {isAdminOrManager && (
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                          <Button
+                            size="small"
+                            startIcon={<Edit />}
+                            onClick={() => setLeaveDialog(true)}
+                            sx={{ fontWeight: 600, textTransform: 'none' }}
+                          >
+                            Update Balance
+                          </Button>
+                        </Box>
+                      )}
                       {employee.leave_balances && employee.leave_balances.length > 0 ? (
                         <Stack spacing={2}>
                           {employee.leave_balances.map((leave, i) => (

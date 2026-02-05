@@ -8,6 +8,7 @@ import {
   Box,
   Typography,
   Avatar,
+  Divider,
 } from '@mui/material'
 import {
   Dashboard as DashboardIcon,
@@ -16,6 +17,13 @@ import {
   Security as SecurityIcon,
   Badge as BadgeIcon,
   Business as BusinessIcon,
+  Home as HomeIcon,
+  Person as PersonIcon,
+  EventNote as EventNoteIcon,
+  Flag as FlagIcon,
+  Groups as GroupsIcon,
+  Campaign as CampaignIcon,
+  AdminPanelSettings as AdminIcon,
 } from '@mui/icons-material'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
@@ -32,6 +40,7 @@ interface MenuItem {
   icon: React.ReactNode
   path: string
   allowedRoles: readonly string[]
+  section?: 'portal' | 'admin'
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ open, width }) => {
@@ -39,23 +48,110 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, width }) => {
   const location = useLocation()
   const { user, hasAnyRole } = useAuth()
 
-  const menuItems: MenuItem[] = [
-    { label: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard', allowedRoles: ROLE_PERMISSIONS.DASHBOARD },
-    { label: 'Employees', icon: <BadgeIcon />, path: '/employees', allowedRoles: ROLE_PERMISSIONS.EMPLOYEES },
-    { label: 'Departments', icon: <BusinessIcon />, path: '/departments', allowedRoles: ROLE_PERMISSIONS.DEPARTMENTS },
-    { label: 'Users', icon: <PeopleIcon />, path: '/users', allowedRoles: ROLE_PERMISSIONS.USERS },
-    { label: 'Security', icon: <SecurityIcon />, path: '/security', allowedRoles: ROLE_PERMISSIONS.SECURITY },
-    { label: 'Settings', icon: <SettingsIcon />, path: '/settings', allowedRoles: ROLE_PERMISSIONS.SETTINGS },
+  // Employee Portal menu items (self-service)
+  const portalMenuItems: MenuItem[] = [
+    { label: 'My Dashboard', icon: <HomeIcon />, path: '/my-dashboard', allowedRoles: ROLE_PERMISSIONS.EMPLOYEE_PORTAL, section: 'portal' },
+    { label: 'My Profile', icon: <PersonIcon />, path: '/my-profile', allowedRoles: ROLE_PERMISSIONS.PROFILE, section: 'portal' },
+    { label: 'My Leave', icon: <EventNoteIcon />, path: '/my-leave', allowedRoles: ROLE_PERMISSIONS.MY_LEAVE, section: 'portal' },
+    { label: 'My Goals', icon: <FlagIcon />, path: '/my-goals', allowedRoles: ROLE_PERMISSIONS.MY_GOALS, section: 'portal' },
+    { label: 'Team Directory', icon: <GroupsIcon />, path: '/team-directory', allowedRoles: ROLE_PERMISSIONS.TEAM_DIRECTORY, section: 'portal' },
+    { label: 'Announcements', icon: <CampaignIcon />, path: '/announcements', allowedRoles: ROLE_PERMISSIONS.ANNOUNCEMENTS, section: 'portal' },
   ]
 
-  const visibleMenuItems = menuItems.filter(item => hasAnyRole([...item.allowedRoles]))
+  // Admin menu items
+  const adminMenuItems: MenuItem[] = [
+    { label: 'Admin Dashboard', icon: <DashboardIcon />, path: '/dashboard', allowedRoles: ROLE_PERMISSIONS.EMPLOYEES, section: 'admin' },
+    { label: 'Employees', icon: <BadgeIcon />, path: '/employees', allowedRoles: ROLE_PERMISSIONS.EMPLOYEES, section: 'admin' },
+    { label: 'Departments', icon: <BusinessIcon />, path: '/departments', allowedRoles: ROLE_PERMISSIONS.DEPARTMENTS, section: 'admin' },
+    { label: 'Users', icon: <PeopleIcon />, path: '/users', allowedRoles: ROLE_PERMISSIONS.USERS, section: 'admin' },
+    { label: 'Announcements', icon: <CampaignIcon />, path: '/announcements/manage', allowedRoles: ROLE_PERMISSIONS.ANNOUNCEMENTS_MANAGE, section: 'admin' },
+    { label: 'Security', icon: <SecurityIcon />, path: '/security', allowedRoles: ROLE_PERMISSIONS.SECURITY, section: 'admin' },
+    { label: 'Settings', icon: <SettingsIcon />, path: '/settings', allowedRoles: ROLE_PERMISSIONS.SETTINGS, section: 'admin' },
+  ]
+
+  const visiblePortalItems = portalMenuItems.filter(item => hasAnyRole([...item.allowedRoles]))
+  const visibleAdminItems = adminMenuItems.filter(item => hasAnyRole([...item.allowedRoles]))
+  const hasAdminSection = visibleAdminItems.length > 0
 
   const isActive = (path: string) => {
     if (path === '/dashboard') {
-      return location.pathname === '/' || location.pathname === '/dashboard'
+      return location.pathname === '/dashboard'
+    }
+    if (path === '/my-dashboard') {
+      return location.pathname === '/' || location.pathname === '/my-dashboard'
+    }
+    if (path === '/announcements') {
+      return location.pathname === '/announcements'
+    }
+    if (path === '/announcements/manage') {
+      return location.pathname.startsWith('/announcements/') || location.pathname === '/announcements/manage'
     }
     return location.pathname.startsWith(path)
   }
+
+  const renderMenuItem = (item: MenuItem) => (
+    <ListItem key={item.path} disablePadding sx={{ mb: 1 }}>
+      <ListItemButton
+        selected={isActive(item.path)}
+        onClick={() => navigate(item.path)}
+        sx={{
+          borderRadius: 1.5,
+          py: 1,
+          px: 1.5,
+          color: 'rgba(255, 255, 255, 0.65)',
+          position: 'relative',
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&.Mui-selected': {
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            color: '#FFFFFF',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+            '& .MuiListItemIcon-root': {
+              color: '#FFFFFF',
+              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))',
+            },
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              left: -16,
+              top: '15%',
+              height: '70%',
+              width: 4,
+              background: '#FFFFFF',
+              borderRadius: '0 4px 4px 0',
+              boxShadow: '2px 0 12px rgba(255, 255, 255, 0.4)',
+            },
+            '&:hover': {
+              backgroundColor: 'rgba(37, 99, 235, 0.2)',
+            },
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            color: '#FFFFFF',
+            transform: 'translateX(2px)',
+            '& .MuiListItemIcon-root': {
+              color: '#93C5FD',
+            },
+          },
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 36,
+            color: 'inherit',
+          }}
+        >
+          {item.icon}
+        </ListItemIcon>
+        <ListItemText
+          primary={item.label}
+          primaryTypographyProps={{
+            fontSize: '0.875rem',
+            fontWeight: isActive(item.path) ? 600 : 500,
+          }}
+        />
+      </ListItemButton>
+    </ListItem>
+  )
 
   return (
     <Drawer
@@ -111,72 +207,41 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, width }) => {
       </Box>
 
       {/* Navigation Menu */}
-      <Box sx={{ flex: 1, py: 1 }}>
+      <Box sx={{ flex: 1, py: 1, overflow: 'auto' }}>
+        {/* Employee Portal Section */}
         <List sx={{ px: 2 }}>
-          {visibleMenuItems.map((item) => (
-            <ListItem key={item.path} disablePadding sx={{ mb: 1.5 }}>
-              <ListItemButton
-                selected={isActive(item.path)}
-                onClick={() => navigate(item.path)}
-                sx={{
-                  borderRadius: 1.5,
-                  py: 1.25,
-                  px: 1.5,
-                  color: 'rgba(255, 255, 255, 0.65)',
-                  position: 'relative',
-                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                  '&.Mui-selected': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                    color: '#FFFFFF',
-                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-                    '& .MuiListItemIcon-root': {
-                      color: '#FFFFFF',
-                      filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))',
-                    },
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      left: -16,
-                      top: '15%',
-                      height: '70%',
-                      width: 4,
-                      background: '#FFFFFF',
-                      borderRadius: '0 4px 4px 0',
-                      boxShadow: '2px 0 12px rgba(255, 255, 255, 0.4)',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                    },
-                  },
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                    color: '#FFFFFF',
-                    transform: 'translateX(2px)',
-                    '& .MuiListItemIcon-root': {
-                      color: '#93C5FD',
-                    },
-                  },
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 36,
-                    color: 'inherit',
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.label}
-                  primaryTypographyProps={{
-                    fontSize: '0.925rem',
-                    fontWeight: isActive(item.path) ? 600 : 500,
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          {visiblePortalItems.map(renderMenuItem)}
         </List>
+
+        {/* Admin Section Divider */}
+        {hasAdminSection && (
+          <>
+            <Divider
+              sx={{
+                mx: 2,
+                my: 1.5,
+                borderColor: 'rgba(255, 255, 255, 0.08)',
+              }}
+            />
+            <Typography
+              variant="overline"
+              sx={{
+                px: 3,
+                py: 1,
+                display: 'block',
+                color: 'rgba(255, 255, 255, 0.4)',
+                fontSize: '0.65rem',
+                fontWeight: 700,
+                letterSpacing: '0.1em',
+              }}
+            >
+              Administration
+            </Typography>
+            <List sx={{ px: 2 }}>
+              {visibleAdminItems.map(renderMenuItem)}
+            </List>
+          </>
+        )}
       </Box>
 
       <Box

@@ -7,6 +7,8 @@ import { AuditLog } from '../entities/AuditLog';
 import { TokenCache } from '../entities/TokenCache';
 import { Employee } from '../entities/Employee';
 import { Department } from '../entities/Department';
+import { LeaveRequest } from '../entities/LeaveRequest';
+import { Announcement } from '../entities/Announcement';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -18,7 +20,7 @@ export const AppDataSource = new DataSource({
   synchronize: false, // Never use true in production
   logging: env.DB_LOGGING,
   ssl: env.DB_SSL ? { rejectUnauthorized: false } : false,
-  entities: [User, Role, UserRole, AuditLog, TokenCache, Employee, Department],
+  entities: [User, Role, UserRole, AuditLog, TokenCache, Employee, Department, LeaveRequest, Announcement],
   migrations: ['src/database/migrations/**/*.ts'],
   subscribers: [],
   maxQueryExecutionTime: 1000, // Log slow queries (>1s)

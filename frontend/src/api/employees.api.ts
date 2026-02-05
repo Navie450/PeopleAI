@@ -14,6 +14,7 @@ import type {
   OrgChartNode,
   Skill,
   PerformanceGoal,
+  EmergencyContact,
 } from '@/types'
 
 export const employeesApi = {
@@ -121,4 +122,32 @@ export const employeesApi = {
     updates: Partial<PerformanceGoal>
   ) =>
     apiClient.put<ApiResponse<Employee>>(`/employees/${id}/goals/${goalId}`, updates),
+
+  // ============================================
+  // SELF-SERVICE ENDPOINTS
+  // ============================================
+
+  // Update own contact info
+  updateMyContactInfo: (data: {
+    personal_email?: string
+    personal_phone?: string
+    address_line1?: string
+    address_line2?: string
+    city?: string
+    state?: string
+    postal_code?: string
+    country?: string
+  }) =>
+    apiClient.put<ApiResponse<Employee>>('/employees/me/contact-info', data),
+
+  // Update own emergency contacts
+  updateMyEmergencyContacts: (emergency_contacts: EmergencyContact[]) =>
+    apiClient.put<ApiResponse<Employee>>('/employees/me/emergency-contacts', { emergency_contacts }),
+
+  // Update own goal progress
+  updateMyGoalProgress: (
+    goalId: string,
+    updates: { progress_percentage?: number; status?: 'not_started' | 'in_progress' | 'completed' | 'cancelled' }
+  ) =>
+    apiClient.put<ApiResponse<Employee>>(`/employees/me/goals/${goalId}/progress`, updates),
 }
