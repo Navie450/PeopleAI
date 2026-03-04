@@ -22,7 +22,6 @@ import {
   ListItemIcon,
   ListItemText,
   Skeleton,
-  alpha,
   Menu,
   MenuItem,
   Dialog,
@@ -43,29 +42,17 @@ import {
   Phone,
   LocationOn,
   CalendarToday,
-  Work,
-  School,
   EmojiEvents,
-  PersonOutline,
   HomeWork,
-  TrendingUp,
-  Groups,
-  Badge,
-  AttachMoney,
-  EventAvailable,
   Description,
-  ContactPhone,
   Star,
-  Flag,
   CheckCircle,
-  Schedule,
   MoreVert,
   SwapHoriz,
   TrendingUpOutlined,
   Cancel,
   Add,
   Save,
-  Close,
 } from '@mui/icons-material'
 import { employeesApi } from '@/api/employees.api'
 import { departmentsApi } from '@/api/departments.api'
@@ -200,8 +187,8 @@ export const EmployeeDetail = () => {
       setActionSuccess('Employee transferred successfully')
       setTransferDialog(false)
       fetchEmployee()
-    } catch (err: any) {
-      setActionError(err.response?.data?.message || 'Failed to transfer employee')
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Failed to transfer employee')
     }
   }
 
@@ -218,8 +205,8 @@ export const EmployeeDetail = () => {
       setActionSuccess('Employee promoted successfully')
       setPromoteDialog(false)
       fetchEmployee()
-    } catch (err: any) {
-      setActionError(err.response?.data?.message || 'Failed to promote employee')
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Failed to promote employee')
     }
   }
 
@@ -234,8 +221,8 @@ export const EmployeeDetail = () => {
       setActionSuccess('Employee terminated successfully')
       setTerminateDialog(false)
       fetchEmployee()
-    } catch (err: any) {
-      setActionError(err.response?.data?.message || 'Failed to terminate employee')
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Failed to terminate employee')
     }
   }
 
@@ -248,8 +235,8 @@ export const EmployeeDetail = () => {
       setSkillDialog(false)
       setNewSkill({ name: '', level: 'beginner', years_of_experience: 0 })
       fetchEmployee()
-    } catch (err: any) {
-      setActionError(err.response?.data?.message || 'Failed to add skill')
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Failed to add skill')
     }
   }
 
@@ -267,8 +254,8 @@ export const EmployeeDetail = () => {
       setGoalDialog(false)
       setNewGoal({ title: '', description: '', target_date: '', progress_percentage: 0, status: 'not_started' })
       fetchEmployee()
-    } catch (err: any) {
-      setActionError(err.response?.data?.message || 'Failed to add goal')
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Failed to add goal')
     }
   }
 
@@ -283,8 +270,8 @@ export const EmployeeDetail = () => {
       setActionSuccess('Leave balance updated successfully')
       setLeaveDialog(false)
       fetchEmployee()
-    } catch (err: any) {
-      setActionError(err.response?.data?.message || 'Failed to update leave balance')
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Failed to update leave balance')
     }
   }
 

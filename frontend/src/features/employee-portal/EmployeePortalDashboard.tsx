@@ -16,7 +16,6 @@ import {
   Flag as GoalIcon,
   Campaign as AnnouncementIcon,
   ArrowForward as ArrowIcon,
-  TrendingUp as TrendingIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
@@ -24,7 +23,7 @@ import { employeesApi } from '@/api/employees.api'
 import { leaveRequestsApi } from '@/api/leave-requests.api'
 import { announcementsApi } from '@/api/announcements.api'
 import { useAuth } from '@/hooks/useAuth'
-import type { Employee, LeaveBalanceSummary, AnnouncementListItem, PerformanceGoal } from '@/types'
+import type { Employee, LeaveBalanceSummary, AnnouncementListItem } from '@/types'
 import { LeaveBalanceCard, AnnouncementCard } from './components'
 
 export const EmployeePortalDashboard = () => {
@@ -50,7 +49,7 @@ export const EmployeePortalDashboard = () => {
         setProfile(profileRes.data.data || null)
         setLeaveBalances(balancesRes.data.data || [])
         setAnnouncements(announcementsRes.data.data || [])
-      } catch (error) {
+      } catch (_error) {
         enqueueSnackbar('Failed to load dashboard data', { variant: 'error' })
       } finally {
         setLoading(false)
@@ -64,7 +63,7 @@ export const EmployeePortalDashboard = () => {
     (g) => g.status === 'in_progress' || g.status === 'not_started'
   ) || []
 
-  const completedGoals = profile?.performance_goals?.filter(
+  const _completedGoals = profile?.performance_goals?.filter(
     (g) => g.status === 'completed'
   ) || []
 

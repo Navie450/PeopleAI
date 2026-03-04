@@ -55,7 +55,7 @@ export const Register = () => {
     if (/[A-Z]/.test(password)) strength += 25
     if (/[a-z]/.test(password)) strength += 25
     if (/[0-9]/.test(password)) strength += 12.5
-    if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) strength += 12.5
+    if (/[!@#$%^&*()_+\-=[{};':"\\|,.<>/?]/.test(password)) strength += 12.5
 
     if (strength < 50) return { strength, label: 'Weak', color: 'error' as const }
     if (strength < 75) return { strength, label: 'Fair', color: 'warning' as const }
@@ -80,7 +80,7 @@ export const Register = () => {
     const hasUpperCase = /[A-Z]/.test(formData.password)
     const hasLowerCase = /[a-z]/.test(formData.password)
     const hasNumber = /[0-9]/.test(formData.password)
-    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password)
+    const hasSpecialChar = /[!@#$%^&*()_+\-=[{};':"\\|,.<>/?]/.test(formData.password)
 
     if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
       setError(
@@ -110,9 +110,10 @@ export const Register = () => {
         last_name: formData.last_name || undefined,
       })
       navigate('/dashboard')
-    } catch (err: any) {
+    } catch (err) {
+      const error = err as { response?: { data?: { error?: { message?: string } } } }
       setError(
-        err.response?.data?.error?.message || 'Registration failed. Please try again.'
+        error.response?.data?.error?.message || 'Registration failed. Please try again.'
       )
     } finally {
       setLoading(false)

@@ -15,30 +15,23 @@ import {
   Switch,
   FormControlLabel,
   Divider,
-  Stack,
   Alert,
   Stepper,
   Step,
   StepLabel,
-  Chip,
   IconButton,
-  Avatar,
   CircularProgress,
 } from '@mui/material'
 import {
   ArrowBack,
   Save,
-  Person,
-  Work,
-  ContactPhone,
-  School,
   Add,
   Delete,
 } from '@mui/icons-material'
 import { employeesApi } from '@/api/employees.api'
 import { departmentsApi } from '@/api/departments.api'
 import { usersApi } from '@/api/users.api'
-import type { CreateEmployeeDto, UpdateEmployeeDto, Employee, DepartmentListItem, EmployeeListItem, User, Skill, EmergencyContact } from '@/types'
+import type { CreateEmployeeDto, UpdateEmployeeDto, DepartmentListItem, EmployeeListItem, User, Skill, EmergencyContact } from '@/types'
 
 interface EmployeeFormProps {
   mode: 'create' | 'edit'
@@ -277,14 +270,14 @@ export const EmployeeForm = ({ mode }: EmployeeFormProps) => {
         await employeesApi.create(cleanData)
       } else if (id) {
         const updateData: UpdateEmployeeDto = { ...cleanData }
-        delete (updateData as any).user_id
+        delete (updateData as UpdateEmployeeDto & { user_id?: string }).user_id
         await employeesApi.update(id, updateData)
       }
 
       navigate('/employees')
-    } catch (err: any) {
+    } catch (err) {
       console.error('Failed to save employee:', err)
-      setError(err.response?.data?.message || 'Failed to save employee')
+      setError(err instanceof Error ? err.message : 'Failed to save employee')
     } finally {
       setSaving(false)
     }

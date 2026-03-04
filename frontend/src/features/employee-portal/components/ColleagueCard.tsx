@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Typography, Avatar, Chip, alpha } from '@mui/material'
-import { Email as EmailIcon, Phone as PhoneIcon, Business as BusinessIcon } from '@mui/icons-material'
+import { Email as EmailIcon, Business as BusinessIcon } from '@mui/icons-material'
 import type { EmployeeListItem } from '@/types'
 
 interface ColleagueCardProps {

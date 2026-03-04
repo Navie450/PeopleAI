@@ -37,14 +37,13 @@ import {
   MoreVert as MoreIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-  Visibility as ViewIcon,
   PushPin as PinIcon,
   PushPinOutlined as UnpinIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { announcementsApi } from '@/api/announcements.api'
-import type { AnnouncementListItem, AnnouncementType, AnnouncementPriority } from '@/types'
+import type { AnnouncementListItem, AnnouncementType } from '@/types'
 import {
   announcementTypeLabels,
   announcementTypeColors,
@@ -85,7 +84,7 @@ export const AnnouncementManagement = () => {
       })
       setAnnouncements(response.data.data)
       setTotalPages(response.data.meta?.pagination?.totalPages || 1)
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to load announcements', { variant: 'error' })
     } finally {
       setLoading(false)
@@ -124,7 +123,7 @@ export const AnnouncementManagement = () => {
       setDeleteDialogOpen(false)
       setSelectedId(null)
       fetchAnnouncements()
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to delete announcement', { variant: 'error' })
     } finally {
       setDeleting(false)
@@ -136,7 +135,7 @@ export const AnnouncementManagement = () => {
       await announcementsApi.togglePin(id, { is_pinned: !currentPinned })
       enqueueSnackbar(`Announcement ${currentPinned ? 'unpinned' : 'pinned'}`, { variant: 'success' })
       fetchAnnouncements()
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to update announcement', { variant: 'error' })
     }
     handleMenuClose()
@@ -229,8 +228,8 @@ export const AnnouncementManagement = () => {
                 }}
               >
                 <MenuItem value="">All</MenuItem>
-                <MenuItem value={true as any}>Active</MenuItem>
-                <MenuItem value={false as any}>Inactive</MenuItem>
+                <MenuItem value={true as unknown as string}>Active</MenuItem>
+                <MenuItem value={false as unknown as string}>Inactive</MenuItem>
               </Select>
             </FormControl>
           </Box>

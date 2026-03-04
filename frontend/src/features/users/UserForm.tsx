@@ -107,9 +107,9 @@ export const UserForm: React.FC<UserFormProps> = ({ mode }) => {
       }
 
       navigate('/users')
-    } catch (err: any) {
+    } catch (err) {
       console.error('Failed to save user:', err)
-      setError(err.response?.data?.message || 'Failed to save user')
+      setError(err instanceof Error ? err.message : 'Failed to save user')
     } finally {
       setSaving(false)
     }

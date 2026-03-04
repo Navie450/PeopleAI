@@ -50,7 +50,7 @@ export interface LeaveRequestListItem {
 }
 
 // Leave Request Detail (extends list item if needed)
-export interface LeaveRequest extends LeaveRequestListItem {}
+export type LeaveRequest = LeaveRequestListItem
 
 // Create Leave Request DTO
 export interface CreateLeaveRequestDto {

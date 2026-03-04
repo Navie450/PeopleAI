@@ -149,7 +149,6 @@ const SecurityHealthCard = ({ score, loading }: { score: number; loading?: boole
 
   useEffect(() => {
     if (loading) {
-      setAnimatedScore(0)
       return
     }
 

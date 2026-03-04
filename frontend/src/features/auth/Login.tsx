@@ -41,8 +41,9 @@ export const Login = () => {
     try {
       await login({ email, password }, rememberMe)
       navigate('/dashboard')
-    } catch (err: any) {
-      setError(err.response?.data?.error?.message || 'Invalid email or password')
+    } catch (err) {
+      const error = err as { response?: { data?: { error?: { message?: string } } } }
+      setError(error.response?.data?.error?.message || 'Invalid email or password')
     } finally {
       setLoading(false)
     }
