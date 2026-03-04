@@ -54,7 +54,7 @@ export const Announcements = () => {
         type: typeFilter || undefined,
         limit: 50,
       })
-      setAnnouncements(response.data.data)
+      setAnnouncements(response.data.data || [])
     } catch {
       enqueueSnackbar('Failed to load announcements', { variant: 'error' })
     } finally {
@@ -66,7 +66,7 @@ export const Announcements = () => {
     try {
       setDetailLoading(true)
       const response = await announcementsApi.getById(id)
-      setSelectedAnnouncement(response.data.data)
+      setSelectedAnnouncement(response.data.data ?? null)
     } catch {
       enqueueSnackbar('Failed to load announcement details', { variant: 'error' })
     } finally {

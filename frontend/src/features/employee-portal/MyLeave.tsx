@@ -44,8 +44,8 @@ export const MyLeave = () => {
         leaveRequestsApi.getMyLeaveRequests({ sort_by: 'created_at', sort_order: 'desc' }),
         leaveRequestsApi.getMyLeaveBalances(),
       ])
-      setLeaveRequests(requestsRes.data.data)
-      setLeaveBalances(balancesRes.data.data)
+      setLeaveRequests(requestsRes.data.data || [])
+      setLeaveBalances(balancesRes.data.data || [])
     } catch {
       enqueueSnackbar('Failed to load leave data', { variant: 'error' })
     } finally {

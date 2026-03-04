@@ -82,7 +82,7 @@ export const AnnouncementManagement = () => {
         page,
         limit,
       })
-      setAnnouncements(response.data.data)
+      setAnnouncements(response.data.data || [])
       setTotalPages(response.data.meta?.pagination?.totalPages || 1)
     } catch {
       enqueueSnackbar('Failed to load announcements', { variant: 'error' })

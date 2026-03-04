@@ -78,7 +78,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({ mode }) => {
   const fetchDepartments = async () => {
     try {
       const response = await departmentsApi.list()
-      setDepartments(response.data.data)
+      setDepartments(response.data.data || [])
     } catch {
       // Silently fail - department selection will just be empty
     }
@@ -90,21 +90,23 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({ mode }) => {
       setLoading(true)
       const response = await announcementsApi.getById(id)
       const data = response.data.data
-      setFormData({
-        title: data.title,
-        content: data.content,
-        type: data.type,
-        priority: data.priority,
-        is_active: data.is_active,
-        is_pinned: data.is_pinned,
-        target_departments: data.target_departments || [],
-        publish_date: data.publish_date
-          ? new Date(data.publish_date).toISOString().slice(0, 16)
-          : undefined,
-        expiry_date: data.expiry_date
-          ? new Date(data.expiry_date).toISOString().slice(0, 16)
-          : undefined,
-      })
+      if (data) {
+        setFormData({
+          title: data.title,
+          content: data.content,
+          type: data.type,
+          priority: data.priority,
+          is_active: data.is_active,
+          is_pinned: data.is_pinned,
+          target_departments: data.target_departments || [],
+          publish_date: data.publish_date
+            ? new Date(data.publish_date).toISOString().slice(0, 16)
+            : undefined,
+          expiry_date: data.expiry_date
+            ? new Date(data.expiry_date).toISOString().slice(0, 16)
+            : undefined,
+        })
+      }
     } catch {
       enqueueSnackbar('Failed to load announcement', { variant: 'error' })
       navigate('/announcements/manage')

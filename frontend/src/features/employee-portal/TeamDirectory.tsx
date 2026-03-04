@@ -41,7 +41,7 @@ export const TeamDirectory = () => {
   const fetchDepartments = async () => {
     try {
       const response = await departmentsApi.list()
-      setDepartments(response.data.data)
+      setDepartments(response.data.data || [])
     } catch {
       // Silently fail - departments filter will just be empty
     }
@@ -53,7 +53,7 @@ export const TeamDirectory = () => {
       const response = await employeesApi.search(search || '', limit)
       // Note: The search API doesn't support pagination well, so we're using basic search
       // In a real app, you'd use the list API with proper pagination
-      setEmployees(response.data.data)
+      setEmployees(response.data.data || [])
       setTotalPages(1) // Simplified - would need proper pagination from API
     } catch {
       enqueueSnackbar('Failed to load team directory', { variant: 'error' })
