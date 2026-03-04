@@ -46,7 +46,7 @@ export const MyLeave = () => {
       ])
       setLeaveRequests(requestsRes.data.data)
       setLeaveBalances(balancesRes.data.data)
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to load leave data', { variant: 'error' })
     } finally {
       setLoading(false)
@@ -60,8 +60,8 @@ export const MyLeave = () => {
       enqueueSnackbar('Leave request submitted successfully', { variant: 'success' })
       setFormOpen(false)
       fetchData()
-    } catch (error: any) {
-      enqueueSnackbar(error.response?.data?.message || 'Failed to submit leave request', { variant: 'error' })
+    } catch (error) {
+      enqueueSnackbar((error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Failed to submit leave request', { variant: 'error' })
     } finally {
       setFormLoading(false)
     }
@@ -77,8 +77,8 @@ export const MyLeave = () => {
       setCancelDialogOpen(false)
       setSelectedRequestId(null)
       fetchData()
-    } catch (error: any) {
-      enqueueSnackbar(error.response?.data?.message || 'Failed to cancel request', { variant: 'error' })
+    } catch (error) {
+      enqueueSnackbar((error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Failed to cancel request', { variant: 'error' })
     } finally {
       setCancelling(false)
     }

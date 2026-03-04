@@ -79,7 +79,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({ mode }) => {
     try {
       const response = await departmentsApi.list()
       setDepartments(response.data.data)
-    } catch (error) {
+    } catch (_error) {
       // Silently fail - department selection will just be empty
     }
   }
@@ -105,7 +105,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({ mode }) => {
           ? new Date(data.expiry_date).toISOString().slice(0, 16)
           : undefined,
       })
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to load announcement', { variant: 'error' })
       navigate('/announcements/manage')
     } finally {
@@ -149,9 +149,10 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({ mode }) => {
       }
 
       navigate('/announcements/manage')
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } }
       enqueueSnackbar(
-        error.response?.data?.message || 'Failed to save announcement',
+        err.response?.data?.message || 'Failed to save announcement',
         { variant: 'error' }
       )
     } finally {

@@ -40,7 +40,7 @@ export const Announcements = () => {
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState<AnnouncementType | ''>('')
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null)
-  const [detailLoading, setDetailLoading] = useState(false)
+  const [_detailLoading, setDetailLoading] = useState(false)
 
   useEffect(() => {
     fetchAnnouncements()
@@ -55,7 +55,7 @@ export const Announcements = () => {
         limit: 50,
       })
       setAnnouncements(response.data.data)
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to load announcements', { variant: 'error' })
     } finally {
       setLoading(false)
@@ -67,7 +67,7 @@ export const Announcements = () => {
       setDetailLoading(true)
       const response = await announcementsApi.getById(id)
       setSelectedAnnouncement(response.data.data)
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to load announcement details', { variant: 'error' })
     } finally {
       setDetailLoading(false)

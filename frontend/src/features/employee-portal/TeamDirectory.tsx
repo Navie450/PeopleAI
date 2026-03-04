@@ -14,7 +14,6 @@ import {
 } from '@mui/material'
 import { Search as SearchIcon } from '@mui/icons-material'
 import { useSnackbar } from 'notistack'
-import { useNavigate } from 'react-router-dom'
 import { employeesApi } from '@/api/employees.api'
 import { departmentsApi } from '@/api/departments.api'
 import type { EmployeeListItem, Department } from '@/types'
@@ -22,7 +21,6 @@ import { ColleagueCard } from './components'
 
 export const TeamDirectory = () => {
   const { enqueueSnackbar } = useSnackbar()
-  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [employees, setEmployees] = useState<EmployeeListItem[]>([])
   const [departments, setDepartments] = useState<Department[]>([])
@@ -44,7 +42,7 @@ export const TeamDirectory = () => {
     try {
       const response = await departmentsApi.list()
       setDepartments(response.data.data)
-    } catch (error) {
+    } catch (_error) {
       // Silently fail - departments filter will just be empty
     }
   }
@@ -57,14 +55,14 @@ export const TeamDirectory = () => {
       // In a real app, you'd use the list API with proper pagination
       setEmployees(response.data.data)
       setTotalPages(1) // Simplified - would need proper pagination from API
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to load team directory', { variant: 'error' })
     } finally {
       setLoading(false)
     }
   }
 
-  const handleEmployeeClick = (id: string) => {
+  const handleEmployeeClick = (_id: string) => {
     // Regular users can view colleague profiles
     // For now, we'll just show a message since we don't have a public profile view
     enqueueSnackbar('Profile viewing coming soon', { variant: 'info' })

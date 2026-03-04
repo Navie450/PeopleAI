@@ -31,7 +31,7 @@ export const MyGoals = () => {
       setLoading(true)
       const response = await employeesApi.getMyProfile()
       setProfile(response.data.data)
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to load goals', { variant: 'error' })
     } finally {
       setLoading(false)
@@ -46,7 +46,7 @@ export const MyGoals = () => {
       })
       enqueueSnackbar('Goal updated successfully', { variant: 'success' })
       fetchProfile()
-    } catch (error) {
+    } catch (_error) {
       enqueueSnackbar('Failed to update goal', { variant: 'error' })
     }
   }

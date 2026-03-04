@@ -23,7 +23,6 @@ import {
   Flag as FlagIcon,
   Groups as GroupsIcon,
   Campaign as CampaignIcon,
-  AdminPanelSettings as AdminIcon,
 } from '@mui/icons-material'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
