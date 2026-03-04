@@ -27,6 +27,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Test
+        run: npm test
+
       - name: Build
         run: npm run build
 
@@ -47,6 +50,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Test
+        run: npm test
+
       - name: Build
         run: npm run build
 
@@ -66,6 +72,9 @@ jobs:
           cache-dependency-path: services/employee-service/package-lock.json
 
       - run: npm ci
+
+      - name: Test
+        run: npm test
 
       - name: Build
         run: npm run build

@@ -1,10 +1,11 @@
 import { apiClient } from './client'
 import axios from 'axios'
+import { env } from '@/config/env'
 import type { ApiResponse, User, AuthTokens } from '@/types'
 
 // Use raw axios for public auth endpoints to avoid circular dependency
 const authClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json'
   }
