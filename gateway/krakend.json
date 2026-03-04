@@ -1,0 +1,898 @@
+{
+  "$schema": "https://www.krakend.io/schema/krakend.json",
+  "version": 3,
+  "name": "PeopleAI API Gateway",
+  "port": 8080,
+  "timeout": "30s",
+  "cache_ttl": "0s",
+  "extra_config": {
+    "security/cors": {
+      "allow_origins": ["http://localhost:3000", "http://localhost:5173"],
+      "allow_methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      "allow_headers": ["Content-Type", "Authorization"],
+      "expose_headers": ["X-Total-Count"],
+      "allow_credentials": true,
+      "max_age": "600s"
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/api/v1/health",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/health",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/health/db",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/health/db",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/health/full",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/health/full",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/auth/register",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/register",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type"]
+    },
+    {
+      "endpoint": "/api/v1/auth/login",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/login",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type"]
+    },
+    {
+      "endpoint": "/api/v1/auth/refresh",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/refresh",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/auth/logout",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/logout",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/auth/me",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/me",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/auth/change-password",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/auth/change-password",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/users",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/users",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}/activate",
+      "method": "PATCH",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}/activate",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}/deactivate",
+      "method": "PATCH",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}/deactivate",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}/roles",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}/roles",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}/roles",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}/roles",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}/roles/{roleId}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}/roles/{roleId}",
+          "host": ["http://auth-service:5001"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/me",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/me",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/me/contact-info",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/me/contact-info",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/me/emergency-contacts",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/me/emergency-contacts",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/me/goals/{goalId}/progress",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/me/goals/{goalId}/progress",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/search",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/search",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/employees/by-skill",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/by-skill",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/employees/org-chart",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/org-chart",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/employees/analytics",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/analytics",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/bulk-update",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/bulk-update",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/employees",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/user/{userId}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/user/{userId}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}/transfer",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}/transfer",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}/promote",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}/promote",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}/terminate",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}/terminate",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}/direct-reports",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}/direct-reports",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}/skills",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}/skills",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}/leave-balance",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}/leave-balance",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}/goals",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}/goals",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/{id}/goals/{goalId}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/employees/{id}/goals/{goalId}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/departments/hierarchy",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/departments/hierarchy",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/departments",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/departments",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/departments",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/departments",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/departments/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/departments/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/departments/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/departments/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/departments/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/departments/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/departments/{id}/employees",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/departments/{id}/employees",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests/my",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests/my",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests/my/balances",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests/my/balances",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests/{id}/cancel",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests/{id}/cancel",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests/team",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests/team",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests/team/summary",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests/team/summary",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests/{id}/approve",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests/{id}/approve",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/leave-requests/{id}/reject",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/leave-requests/{id}/reject",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/announcements",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/announcements",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/announcements/admin/all",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/announcements/admin/all",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"],
+      "input_query_strings": ["*"]
+    },
+    {
+      "endpoint": "/api/v1/announcements",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/announcements",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/announcements/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/announcements/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/announcements/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/announcements/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/announcements/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/announcements/{id}",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/announcements/{id}/pin",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/announcements/{id}/pin",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ],
+      "input_headers": ["Content-Type", "Authorization"]
+    },
+    {
+      "endpoint": "/api/v1/employees/health",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/health",
+          "host": ["http://employee-service:5002"],
+          "encoding": "no-op"
+        }
+      ]
+    }
+  ]
+}
