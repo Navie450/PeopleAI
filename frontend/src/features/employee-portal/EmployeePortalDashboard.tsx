@@ -49,7 +49,7 @@ export const EmployeePortalDashboard = () => {
         setProfile(profileRes.data.data || null)
         setLeaveBalances(balancesRes.data.data || [])
         setAnnouncements(announcementsRes.data.data || [])
-      } catch (_error) {
+      } catch {
         enqueueSnackbar('Failed to load dashboard data', { variant: 'error' })
       } finally {
         setLoading(false)
@@ -63,9 +63,6 @@ export const EmployeePortalDashboard = () => {
     (g) => g.status === 'in_progress' || g.status === 'not_started'
   ) || []
 
-  const _completedGoals = profile?.performance_goals?.filter(
-    (g) => g.status === 'completed'
-  ) || []
 
   const avgGoalProgress = activeGoals.length > 0
     ? Math.round(activeGoals.reduce((acc, g) => acc + g.progress_percentage, 0) / activeGoals.length)

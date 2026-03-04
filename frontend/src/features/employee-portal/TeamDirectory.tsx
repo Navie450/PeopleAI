@@ -42,7 +42,7 @@ export const TeamDirectory = () => {
     try {
       const response = await departmentsApi.list()
       setDepartments(response.data.data)
-    } catch (_error) {
+    } catch {
       // Silently fail - departments filter will just be empty
     }
   }
@@ -55,14 +55,14 @@ export const TeamDirectory = () => {
       // In a real app, you'd use the list API with proper pagination
       setEmployees(response.data.data)
       setTotalPages(1) // Simplified - would need proper pagination from API
-    } catch (_error) {
+    } catch {
       enqueueSnackbar('Failed to load team directory', { variant: 'error' })
     } finally {
       setLoading(false)
     }
   }
 
-  const handleEmployeeClick = (_id: string) => {
+  const handleEmployeeClick = () => {
     // Regular users can view colleague profiles
     // For now, we'll just show a message since we don't have a public profile view
     enqueueSnackbar('Profile viewing coming soon', { variant: 'info' })
