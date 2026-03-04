@@ -371,7 +371,7 @@ export const EmployeeDashboard = () => {
                     dataKey="value"
                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   >
-                    {locationData.map((entry, index) => (
+                    {locationData.map((_entry, index) => (
                       <Cell key={`cell-${index}`} fill={index === 0 ? '#3B82F6' : '#0F172A'} />
                     ))}
                   </Pie>
@@ -404,7 +404,7 @@ export const EmployeeDashboard = () => {
                     dataKey="value"
                     label={({ name, value }) => `${name}: ${value}`}
                   >
-                    {statusData.map((entry, index) => (
+                    {statusData.map((_entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
@@ -438,7 +438,7 @@ export const EmployeeDashboard = () => {
                     dataKey="value"
                     label={({ name, value }) => `${name}: ${value}`}
                   >
-                    {typeData.map((entry, index) => (
+                    {typeData.map((_entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[(index + 2) % COLORS.length]} />
                     ))}
                   </Pie>

@@ -185,7 +185,7 @@ export const EmployeePortalDashboard = () => {
               </Avatar>
               <Box sx={{ flex: 1, pt: 1 }}>
                 <Typography variant="h5" sx={{ fontWeight: 700, color: '#0F172A' }}>
-                  {user?.display_name || user?.email || 'Admin User'}
+                  {(user?.first_name && user?.last_name ? `${user.first_name} ${user.last_name}` : user?.email) || 'Admin User'}
                 </Typography>
                 <Typography variant="body1" sx={{ color: '#64748B', mb: 1 }}>
                   Administrator Account

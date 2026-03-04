@@ -16,14 +16,14 @@ import { Search as SearchIcon } from '@mui/icons-material'
 import { useSnackbar } from 'notistack'
 import { employeesApi } from '@/api/employees.api'
 import { departmentsApi } from '@/api/departments.api'
-import type { EmployeeListItem, Department } from '@/types'
+import type { EmployeeListItem, DepartmentListItem } from '@/types'
 import { ColleagueCard } from './components'
 
 export const TeamDirectory = () => {
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = useState(true)
   const [employees, setEmployees] = useState<EmployeeListItem[]>([])
-  const [departments, setDepartments] = useState<Department[]>([])
+  const [departments, setDepartments] = useState<DepartmentListItem[]>([])
   const [search, setSearch] = useState('')
   const [departmentFilter, setDepartmentFilter] = useState('')
   const [page, setPage] = useState(1)
@@ -41,7 +41,7 @@ export const TeamDirectory = () => {
   const fetchDepartments = async () => {
     try {
       const response = await departmentsApi.list()
-      setDepartments(response.data.data)
+      setDepartments(response.data.data || [])
     } catch {
       // Silently fail - departments filter will just be empty
     }
@@ -53,7 +53,7 @@ export const TeamDirectory = () => {
       const response = await employeesApi.search(search || '', limit)
       // Note: The search API doesn't support pagination well, so we're using basic search
       // In a real app, you'd use the list API with proper pagination
-      setEmployees(response.data.data)
+      setEmployees(response.data.data || [])
       setTotalPages(1) // Simplified - would need proper pagination from API
     } catch {
       enqueueSnackbar('Failed to load team directory', { variant: 'error' })

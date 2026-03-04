@@ -30,7 +30,7 @@ export const MyGoals = () => {
     try {
       setLoading(true)
       const response = await employeesApi.getMyProfile()
-      setProfile(response.data.data)
+      setProfile(response.data.data ?? null)
     } catch {
       enqueueSnackbar('Failed to load goals', { variant: 'error' })
     } finally {

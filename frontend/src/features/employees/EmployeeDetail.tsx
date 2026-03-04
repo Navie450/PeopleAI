@@ -179,7 +179,7 @@ export const EmployeeDetail = () => {
     if (!id) return
     try {
       await employeesApi.transfer(id, {
-        department_id: transferData.department_id,
+        new_department_id: transferData.department_id,
         new_manager_id: transferData.new_manager_id || undefined,
         effective_date: transferData.effective_date,
         reason: transferData.reason,
@@ -215,8 +215,7 @@ export const EmployeeDetail = () => {
     try {
       await employeesApi.terminate(id, {
         termination_date: terminateData.termination_date,
-        reason: terminateData.reason,
-        termination_type: terminateData.termination_type as 'resignation' | 'termination' | 'retirement' | 'layoff',
+        termination_reason: terminateData.reason,
       })
       setActionSuccess('Employee terminated successfully')
       setTerminateDialog(false)
@@ -245,7 +244,7 @@ export const EmployeeDetail = () => {
     try {
       await employeesApi.addPerformanceGoal(id, {
         title: newGoal.title!,
-        description: newGoal.description,
+        description: newGoal.description || '',
         target_date: newGoal.target_date!,
         progress_percentage: newGoal.progress_percentage || 0,
         status: newGoal.status as 'not_started' | 'in_progress' | 'completed' | 'cancelled',
