@@ -91,16 +91,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const hasRole = useCallback(
     (role: string) => {
-      return user?.user_roles?.some((ur) => ur.role.role_name === role) ?? false
+      return user?.roles?.includes(role) ?? false
     },
     [user]
   )
 
   const hasAnyRole = useCallback(
     (roles: string[]) => {
-      return roles.some((role) =>
-        user?.user_roles?.some((ur) => ur.role.role_name === role)
-      ) ?? false
+      return user?.roles?.some((r) => roles.includes(r)) ?? false
     },
     [user]
   )
