@@ -16,14 +16,14 @@ import { Search as SearchIcon } from '@mui/icons-material'
 import { useSnackbar } from 'notistack'
 import { employeesApi } from '@/api/employees.api'
 import { departmentsApi } from '@/api/departments.api'
-import type { EmployeeListItem, Department } from '@/types'
+import type { EmployeeListItem, DepartmentListItem } from '@/types'
 import { ColleagueCard } from './components'
 
 export const TeamDirectory = () => {
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = useState(true)
   const [employees, setEmployees] = useState<EmployeeListItem[]>([])
-  const [departments, setDepartments] = useState<Department[]>([])
+  const [departments, setDepartments] = useState<DepartmentListItem[]>([])
   const [search, setSearch] = useState('')
   const [departmentFilter, setDepartmentFilter] = useState('')
   const [page, setPage] = useState(1)

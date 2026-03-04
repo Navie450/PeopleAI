@@ -27,7 +27,7 @@ import type {
   UpdateAnnouncementDto,
   AnnouncementType,
   AnnouncementPriority,
-  Department,
+  DepartmentListItem,
 } from '@/types'
 import { announcementTypeLabels, announcementPriorityLabels } from '@/types'
 
@@ -53,7 +53,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({ mode }) => {
 
   const [loading, setLoading] = useState(mode === 'edit')
   const [saving, setSaving] = useState(false)
-  const [departments, setDepartments] = useState<Department[]>([])
+  const [departments, setDepartments] = useState<DepartmentListItem[]>([])
   const [error, setError] = useState('')
 
   const [formData, setFormData] = useState<CreateAnnouncementDto>({
