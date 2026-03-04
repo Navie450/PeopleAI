@@ -109,9 +109,9 @@ export const DepartmentForm = ({ mode }: DepartmentFormProps) => {
       }
 
       navigate('/departments')
-    } catch (err: any) {
+    } catch (err) {
       console.error('Failed to save department:', err)
-      setError(err.response?.data?.message || 'Failed to save department')
+      setError(err instanceof Error ? err.message : 'Failed to save department')
     } finally {
       setSaving(false)
     }

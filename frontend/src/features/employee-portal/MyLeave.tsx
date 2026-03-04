@@ -46,7 +46,7 @@ export const MyLeave = () => {
       ])
       setLeaveRequests(requestsRes.data.data)
       setLeaveBalances(balancesRes.data.data)
-    } catch (_error) {
+    } catch {
       enqueueSnackbar('Failed to load leave data', { variant: 'error' })
     } finally {
       setLoading(false)

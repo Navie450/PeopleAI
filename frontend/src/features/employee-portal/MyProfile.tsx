@@ -79,7 +79,7 @@ export const MyProfile = () => {
         })
         setEmergencyContacts(data.emergency_contacts || [])
       }
-    } catch (_error) {
+    } catch {
       enqueueSnackbar('Failed to load profile', { variant: 'error' })
     } finally {
       setLoading(false)
@@ -93,7 +93,7 @@ export const MyProfile = () => {
       enqueueSnackbar('Contact information updated successfully', { variant: 'success' })
       setEditingContact(false)
       fetchProfile()
-    } catch (_error) {
+    } catch {
       enqueueSnackbar('Failed to update contact information', { variant: 'error' })
     } finally {
       setSaving(false)
@@ -107,7 +107,7 @@ export const MyProfile = () => {
       enqueueSnackbar('Emergency contacts updated successfully', { variant: 'success' })
       setEditingEmergency(false)
       fetchProfile()
-    } catch (_error) {
+    } catch {
       enqueueSnackbar('Failed to update emergency contacts', { variant: 'error' })
     } finally {
       setSaving(false)

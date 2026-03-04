@@ -84,7 +84,7 @@ export const AnnouncementManagement = () => {
       })
       setAnnouncements(response.data.data)
       setTotalPages(response.data.meta?.pagination?.totalPages || 1)
-    } catch (_error) {
+    } catch {
       enqueueSnackbar('Failed to load announcements', { variant: 'error' })
     } finally {
       setLoading(false)
@@ -123,7 +123,7 @@ export const AnnouncementManagement = () => {
       setDeleteDialogOpen(false)
       setSelectedId(null)
       fetchAnnouncements()
-    } catch (_error) {
+    } catch {
       enqueueSnackbar('Failed to delete announcement', { variant: 'error' })
     } finally {
       setDeleting(false)
@@ -135,7 +135,7 @@ export const AnnouncementManagement = () => {
       await announcementsApi.togglePin(id, { is_pinned: !currentPinned })
       enqueueSnackbar(`Announcement ${currentPinned ? 'unpinned' : 'pinned'}`, { variant: 'success' })
       fetchAnnouncements()
-    } catch (_error) {
+    } catch {
       enqueueSnackbar('Failed to update announcement', { variant: 'error' })
     }
     handleMenuClose()

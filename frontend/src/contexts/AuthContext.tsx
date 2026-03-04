@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const { data } = await authApi.getCurrentUser()
           setUser(data.data!)
           storage.setUser(data.data!)
-        } catch (_error) {
+        } catch {
           // Token invalid, clear storage
           storage.clearTokens()
         }
