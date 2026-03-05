@@ -101,6 +101,19 @@ services:
     networks:
       - peopleai-network
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: peopleai-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - krakend
+    networks:
+      - peopleai-network
+
 volumes:
   postgres_data:
 
