@@ -274,6 +274,105 @@ npm install
 npm run dev    # starts on :5173
 ```
 
+## Testing
+
+The project has comprehensive unit tests across all packages (261 total tests).
+
+| Package | Framework | Tests | Covers |
+| ------- | --------- | ----- | ------ |
+| Frontend | Vitest + MSW | 53 | API clients, AuthContext, storage utils |
+| Auth Service | Jest + ts-jest | 68 | Controllers, services, JWT, password, DTOs |
+| Employee Service | Jest + ts-jest | 140 | Controllers, services, middleware, DTOs, utils |
+
+### Run tests locally
+
+```bash
+# Frontend
+cd frontend
+npm ci
+npm run lint
+npm test
+npm run build
+
+# Auth Service
+cd services/auth-service
+npm ci
+npm test
+npm run build
+
+# Employee Service
+cd services/employee-service
+npm ci
+npm test
+npm run build
+```
+
+To run tests with coverage:
+
+```bash
+# From each package directory
+npm run test:coverage
+```
+
+### Test structure
+
+Each package keeps tests in `src/__tests__/` mirroring the source layout:
+
+```
+src/
+├── controllers/
+│   └── auth.controller.ts          ← source
+├── services/
+│   └── auth.service.ts             ← source
+└── __tests__/
+    ├── setup.ts                       (mocks & test config)
+    ├── controllers/
+    │   └── auth.controller.test.ts    (tests auth.controller.ts)
+    └── services/
+        └── auth.service.test.ts       (tests auth.service.ts)
+```
+
+- Backend tests mock the **TypeORM repository** — no database required.
+- Frontend tests use **MSW** (Mock Service Worker) to intercept HTTP requests — no running API required.
+
+## CI/CD
+
+GitHub Actions runs automatically on pushes to `main` and `feature/*` branches, and on pull requests to `main`.
+
+The pipeline is defined in `.github/workflows/ci.yml` and runs **3 parallel jobs**:
+
+| Job | Steps |
+| --- | ----- |
+| **Frontend** | `npm ci` → `npm run lint` → `npm test` → `npm run build` |
+| **Auth Service** | `npm ci` → `npm test` → `npm run build` |
+| **Employee Service** | `npm ci` → `npm test` → `npm run build` |
+
+All jobs run on `ubuntu-latest` with Node.js 20.
+
+### Triggering CI
+
+CI runs automatically when you:
+
+- Push to `main` or any `feature/*` branch
+- Open or update a pull request targeting `main`
+
+### Running the full CI pipeline locally
+
+To verify everything before pushing:
+
+```bash
+# Frontend
+cd frontend && npm ci && npm run lint && npm test && npm run build
+
+# Auth Service
+cd services/auth-service && npm ci && npm test && npm run build
+
+# Employee Service
+cd services/employee-service && npm ci && npm test && npm run build
+```
+
+If all three pass (lint clean, tests green, build succeeds), CI will pass on GitHub.
+
 ## Role Permissions
 
 | Feature                              | Admin | Manager | User |
@@ -291,7 +390,4 @@ npm run dev    # starts on :5173
 | Departments - View                   | Yes   | Yes     | No   |
 | Departments - Add/Edit/Delete        | Yes   | No      | No   |
 
-## Further Reading
 
-- [Implementation.md](./Implementation.md) - Detailed implementation roadmap
-- [features.md](./features.md) - Employee feature priority and build order
