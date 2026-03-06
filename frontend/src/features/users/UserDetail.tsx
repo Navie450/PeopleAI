@@ -17,7 +17,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   Select,
   MenuItem,
   FormControl,
@@ -41,7 +40,7 @@ import {
 } from '@mui/icons-material'
 import { usersApi } from '@/api/users.api'
 import { useNavigate, useParams } from 'react-router-dom'
-import type { User, Role } from '@/types'
+import type { User } from '@/types'
 
 interface TabPanelProps {
   children?: React.ReactNode

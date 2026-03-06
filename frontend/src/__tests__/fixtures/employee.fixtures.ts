@@ -1,0 +1,76 @@
+import type { Employee, EmployeeListItem, CreateEmployeeDto } from '@/types'
+
+export const createMockEmployeeListItem = (overrides: Partial<EmployeeListItem> = {}): EmployeeListItem => ({
+  id: 'emp-uuid-1',
+  employee_id: 'EMP001',
+  first_name: 'John',
+  last_name: 'Doe',
+  full_name: 'John Doe',
+  work_email: 'john@company.com',
+  job_title: 'Software Engineer',
+  job_level: 'Senior',
+  department: { id: 'dept-uuid-1', name: 'Engineering' },
+  manager: { id: 'mgr-uuid-1', full_name: 'Jane Smith' },
+  employment_status: 'active',
+  employment_type: 'full_time',
+  hire_date: '2022-01-15',
+  work_location: 'San Francisco',
+  is_remote: false,
+  profile_picture_url: undefined,
+  created_at: '2022-01-15T00:00:00Z',
+  ...overrides,
+})
+
+export const createMockEmployee = (overrides: Partial<Employee> = {}): Employee => ({
+  ...createMockEmployeeListItem(),
+  user_id: 'user-uuid-1',
+  date_of_birth: '1990-05-20',
+  gender: 'male',
+  nationality: 'US',
+  marital_status: 'single',
+  personal_email: 'john@gmail.com',
+  work_phone: '+1234567890',
+  personal_phone: null,
+  address: {
+    line1: '123 Main St',
+    city: 'San Francisco',
+    state: 'CA',
+    postal_code: '94102',
+    country: 'US',
+  },
+  base_salary: 120000,
+  salary_currency: 'USD',
+  salary_frequency: 'annual',
+  work_schedule: '9-5',
+  timezone: 'America/Los_Angeles',
+  skills: [
+    { name: 'TypeScript', level: 'expert', years_of_experience: 5 },
+  ],
+  certifications: [],
+  education: [],
+  emergency_contacts: [
+    { name: 'Jane Doe', relationship: 'Spouse', phone: '+1987654321', is_primary: true },
+  ],
+  leave_balances: [
+    { leave_type: 'annual', total_days: 20, used_days: 5, pending_days: 0, carry_forward_days: 2 },
+  ],
+  documents: [],
+  performance_goals: [],
+  employment_history: [],
+  years_of_service: 2,
+  direct_reports_count: 0,
+  updated_at: '2024-01-01T00:00:00Z',
+  ...overrides,
+} as Employee)
+
+export const createMockCreateEmployeeDto = (overrides: Partial<CreateEmployeeDto> = {}): CreateEmployeeDto => ({
+  user_id: 'user-uuid-1',
+  first_name: 'John',
+  last_name: 'Doe',
+  work_email: 'john@company.com',
+  job_title: 'Software Engineer',
+  hire_date: '2022-01-15',
+  employment_type: 'full_time',
+  employment_status: 'active',
+  ...overrides,
+} as CreateEmployeeDto)

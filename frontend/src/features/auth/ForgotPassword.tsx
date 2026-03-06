@@ -41,8 +41,9 @@ export const ForgotPassword = () => {
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1500))
             setSuccess(true)
-        } catch (err: any) {
-            setError(err.response?.data?.error?.message || 'Failed to send reset link. Please try again.')
+        } catch (err) {
+            const error = err as { response?: { data?: { error?: { message?: string } } } }
+            setError(error.response?.data?.error?.message || 'Failed to send reset link. Please try again.')
         } finally {
             setLoading(false)
         }

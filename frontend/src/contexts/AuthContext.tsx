@@ -16,6 +16,7 @@ interface AuthContextValue {
   hasAnyRole: (roles: string[]) => boolean
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -34,7 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const { data } = await authApi.getCurrentUser()
           setUser(data.data!)
           storage.setUser(data.data!)
-        } catch (error) {
+        } catch {
           // Token invalid, clear storage
           storage.clearTokens()
         }
@@ -91,16 +92,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const hasRole = useCallback(
     (role: string) => {
-      return user?.user_roles?.some((ur) => ur.role.role_name === role) ?? false
+      return user?.roles?.includes(role) ?? false
     },
     [user]
   )
 
   const hasAnyRole = useCallback(
     (roles: string[]) => {
-      return roles.some((role) =>
-        user?.user_roles?.some((ur) => ur.role.role_name === role)
-      ) ?? false
+      return user?.roles?.some((r) => roles.includes(r)) ?? false
     },
     [user]
   )
@@ -154,6 +153,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = React.useContext(AuthContext)
   if (context === undefined) {

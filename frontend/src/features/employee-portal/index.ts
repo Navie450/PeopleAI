@@ -1,0 +1,6 @@
+export { EmployeePortalDashboard } from './EmployeePortalDashboard'
+export { MyProfile } from './MyProfile'
+export { MyLeave } from './MyLeave'
+export { MyGoals } from './MyGoals'
+export { TeamDirectory } from './TeamDirectory'
+export { Announcements } from './Announcements'
