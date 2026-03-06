@@ -1,0 +1,155 @@
+import { EmploymentStatus, EmploymentType } from '../../entities/Employee';
+declare const uuid1 = "550e8400-e29b-41d4-a716-446655440001";
+declare const uuid2 = "550e8400-e29b-41d4-a716-446655440002";
+declare const uuid3 = "550e8400-e29b-41d4-a716-446655440003";
+declare const deptUuid = "660e8400-e29b-41d4-a716-446655440001";
+declare const userUuid = "770e8400-e29b-41d4-a716-446655440001";
+export declare const createMockEmployee: (overrides?: Record<string, unknown>) => {
+    id: string;
+    employee_id: string;
+    user_id: string;
+    first_name: string;
+    middle_name: null;
+    last_name: string;
+    work_email: string;
+    personal_email: string;
+    work_phone: string;
+    personal_phone: null;
+    job_title: string;
+    job_level: string;
+    department_id: string;
+    department: {
+        id: string;
+        name: string;
+    };
+    manager_id: string;
+    manager: {
+        id: string;
+        first_name: string;
+        last_name: string;
+    };
+    direct_reports: never[];
+    employment_status: EmploymentStatus;
+    employment_type: EmploymentType;
+    hire_date: Date;
+    date_of_birth: Date;
+    gender: string;
+    nationality: string;
+    marital_status: string;
+    profile_picture_url: null;
+    address_line1: string;
+    address_line2: null;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+    probation_end_date: null;
+    termination_date: null;
+    termination_reason: null;
+    base_salary: number;
+    salary_currency: string;
+    salary_frequency: string;
+    work_location: string;
+    work_schedule: string;
+    timezone: string;
+    is_remote: boolean;
+    skills: {
+        name: string;
+        level: string;
+        years_of_experience: number;
+        certified: boolean;
+    }[];
+    certifications: never[];
+    education: {
+        institution: string;
+        degree: string;
+        field_of_study: string;
+        start_date: string;
+        end_date: string;
+    }[];
+    emergency_contacts: {
+        name: string;
+        relationship: string;
+        phone: string;
+        email: string;
+        is_primary: boolean;
+    }[];
+    leave_balances: {
+        leave_type: string;
+        total_days: number;
+        used_days: number;
+        pending_days: number;
+        carry_forward_days: number;
+    }[];
+    documents: never[];
+    performance_goals: {
+        id: string;
+        title: string;
+        description: string;
+        target_date: string;
+        status: string;
+        progress_percentage: number;
+        created_at: string;
+        updated_at: string;
+    }[];
+    employment_history: never[];
+    bank_details: null;
+    custom_fields: {};
+    metadata: {};
+    last_performance_rating: number;
+    last_review_date: Date;
+    next_review_date: Date;
+    tax_id: null;
+    tax_filing_status: null;
+    deleted_at: null;
+    created_at: Date;
+    updated_at: Date;
+};
+export declare const createMockDepartment: (overrides?: Record<string, unknown>) => {
+    id: string;
+    name: string;
+    code: string;
+    description: string;
+    parent_id: null;
+    manager_id: string;
+    location: string;
+    budget: number;
+    metadata: {};
+    is_active: boolean;
+    deleted_at: null;
+    created_at: Date;
+    updated_at: Date;
+};
+export declare const createMockCreateEmployeeDto: (overrides?: Record<string, unknown>) => {
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    work_email: string;
+    job_title: string;
+    hire_date: string;
+    employment_type: EmploymentType;
+    employment_status: EmploymentStatus;
+    salary_currency: string;
+    salary_frequency: string;
+    is_remote: boolean;
+};
+export declare const createMockTransferDto: (overrides?: Record<string, unknown>) => {
+    new_department_id: string;
+    effective_date: string;
+    reason: string;
+};
+export declare const createMockPromoteDto: (overrides?: Record<string, unknown>) => {
+    new_job_title: string;
+    new_job_level: string;
+    new_salary: number;
+    effective_date: string;
+    reason: string;
+};
+export declare const createMockTerminateDto: (overrides?: Record<string, unknown>) => {
+    termination_date: string;
+    termination_reason: string;
+    eligible_for_rehire: boolean;
+    exit_interview_completed: boolean;
+};
+export { uuid1, uuid2, uuid3, deptUuid, userUuid };
+//# sourceMappingURL=employee.fixtures.d.ts.map

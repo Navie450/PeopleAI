@@ -1,0 +1,25 @@
+import { Request, Response, NextFunction } from 'express';
+export declare const listEmployees: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const getEmployee: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const getEmployeeByUserId: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const getMyProfile: (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
+export declare const createEmployee: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const updateEmployee: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const deleteEmployee: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const bulkUpdateEmployees: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const transferEmployee: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const promoteEmployee: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const terminateEmployee: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const getDirectReports: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const getOrgChart: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const getAnalytics: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const searchEmployees: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const getEmployeesBySkill: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const updateSkills: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const updateLeaveBalance: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const addPerformanceGoal: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const updatePerformanceGoal: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const updateMyContactInfo: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const updateMyEmergencyContacts: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const updateMyGoalProgress: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+//# sourceMappingURL=employee.controller.d.ts.map
